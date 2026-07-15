@@ -33,7 +33,7 @@
   "author": "faranevfy",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/faranevfy/git-yard.git"
+    "url": "git+https://github.com/faranevfy/gitreak.git"
   },
   "dependencies": {
     "chalk": "^5.4.1",
