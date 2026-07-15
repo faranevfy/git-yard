@@ -72,12 +72,6 @@ Cache: ~/.git-yard/ (15-minute TTL)`);
   const output = renderGraph(data.days, theme, stats, year);
 
   console.log(output);
-  console.log();
-  console.log(
-    `  Total: ${stats.totalContributions.toLocaleString()} contributions` +
-      `  |  Current streak: ${stats.currentStreak} days` +
-      `  |  Longest streak: ${stats.longestStreak} days`,
-  );
 }
 
 main().catch((err) => {
