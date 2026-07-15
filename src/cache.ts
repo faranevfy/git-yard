@@ -1,7 +1,7 @@
 /**
  * File-based cache for contribution data.
  *
- * Stores data in ~/.git-yard/{username}_{year}.json
+ * Stores data in ~/.git-yard/{username}_{year|"rolling"}.json
  * with a 15-minute TTL.
  */
 
@@ -13,8 +13,12 @@ import type { FetchResult } from "./fetch.js";
 const CACHE_DIR = join(homedir(), ".git-yard");
 const TTL_MS = 15 * 60 * 1000;
 
-function cachePath(username: string, year: number): string {
-  return join(CACHE_DIR, `${username}_${year}.json`);
+function cacheKey(username: string, year: number | null): string {
+  return year !== null ? `${username}_${year}` : `${username}_rolling`;
+}
+
+function cacheFile(username: string, year: number | null): string {
+  return join(CACHE_DIR, `${cacheKey(username, year)}.json`);
 }
 
 async function ensureCacheDir(): Promise<void> {
@@ -23,9 +27,9 @@ async function ensureCacheDir(): Promise<void> {
 
 export async function readCache(
   username: string,
-  year: number,
+  year: number | null,
 ): Promise<FetchResult | null> {
-  const path = cachePath(username, year);
+  const path = cacheFile(username, year);
   try {
     const stats = await stat(path);
     if (Date.now() - stats.mtimeMs > TTL_MS) return null;
@@ -36,9 +40,12 @@ export async function readCache(
   }
 }
 
-export async function writeCache(data: FetchResult): Promise<void> {
+export async function writeCache(
+  data: FetchResult,
+  year: number | null,
+): Promise<void> {
   await ensureCacheDir();
-  await writeFile(cachePath(data.username, data.year), JSON.stringify(data), "utf-8");
+  await writeFile(cacheFile(data.username, year), JSON.stringify(data), "utf-8");
 }
 
 export function getCacheDir(): string {

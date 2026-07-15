@@ -1,13 +1,12 @@
 #!/usr/bin/env node
-
 /**
  * git-yard — Your terminal is your yard.
  *
  * Renders a GitHub contribution graph directly in the terminal
  * using true-color ANSI escape codes. Zero config, no auth.
  *
- *   $ git-yard evfydev
- *   $ git-yard evfydev --year 2025
+ *   $ git-yard faranevfy          (rolling 53-week default)
+ *   $ git-yard faranevfy --year 2025
  */
 
 import { fetchContributions } from "./fetch.js";
@@ -23,12 +22,12 @@ async function main(): Promise<void> {
     console.log(`git-yard — GitHub contribution graph in your terminal
 
 Usage:
-  git-yard <username>              Show this year's contribution graph
-  git-yard <username> --year 2025  Show a specific year
+  git-yard <username>              Show rolling 53-week contribution graph
+  git-yard <username> --year 2025  Show a specific calendar year
   git-yard <username> --theme blue Use an alternate color theme
 
 Examples:
-  git-yard evfydev
+  git-yard faranevfy
   git-yard torvalds --year 2024
 
 Cache: ~/.git-yard/ (15-minute TTL)`);
@@ -36,7 +35,7 @@ Cache: ~/.git-yard/ (15-minute TTL)`);
   }
 
   const username = args[0];
-  let year = new Date().getFullYear();
+  let year: number | null = null;
   let themeName = DEFAULT_THEME;
 
   for (let i = 1; i < args.length; i++) {
@@ -49,7 +48,9 @@ Cache: ~/.git-yard/ (15-minute TTL)`);
     } else if (args[i] === "--theme" || args[i] === "-t") {
       themeName = args[++i];
       if (!THEMES[themeName]) {
-        console.error(`Error: Unknown theme "${themeName}". Available: ${Object.keys(THEMES).join(", ")}`);
+        console.error(
+          `Error: Unknown theme "${themeName}". Available: ${Object.keys(THEMES).join(", ")}`,
+        );
         process.exit(1);
       }
     }
@@ -57,20 +58,22 @@ Cache: ~/.git-yard/ (15-minute TTL)`);
 
   const theme = THEMES[themeName];
 
-  // Try cache first
   let data = await readCache(username, year);
 
   if (!data) {
-    console.error(`Fetching contributions for ${username} (${year})...`);
+    console.error(
+      `Fetching contributions for ${username}${year ? ` (${year})` : ""}...`,
+    );
     data = await fetchContributions(username, year);
-    await writeCache(data);
+    await writeCache(data, year);
   } else {
-    console.error(`Using cached data for ${username} (${year})`);
+    console.error(
+      `Using cached data for ${username}${year ? ` (${year})` : ""}`,
+    );
   }
 
   const stats = calculateStreaks(data.days);
-  const output = renderGraph(data.days, theme, stats, year);
-
+  const output = renderGraph(data.days, theme, stats);
   console.log(output);
 }
 
