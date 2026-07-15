@@ -13,7 +13,7 @@ export interface Theme {
 /** GitHub's canonical green palette. */
 export const GITHUB_GREEN: Theme = {
   name: "GitHub Green",
-  levels: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+  levels: ["#ffffff", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
   labels: [
     "No contributions",
     "1-9 contributions",
@@ -21,6 +21,13 @@ export const GITHUB_GREEN: Theme = {
     "20-29 contributions",
     "30+ contributions",
   ],
+};
+
+/** GitHub's dark mode palette — for terminals with dark backgrounds. */
+export const GITHUB_DARK: Theme = {
+  name: "GitHub Dark",
+  levels: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
+  labels: GITHUB_GREEN.labels,
 };
 
 /** Blue theme — color-blind accessible alternative. */
@@ -32,6 +39,7 @@ export const GITHUB_BLUE: Theme = {
 
 export const THEMES: Record<string, Theme> = {
   green: GITHUB_GREEN,
+  dark: GITHUB_DARK,
   blue: GITHUB_BLUE,
 };
 

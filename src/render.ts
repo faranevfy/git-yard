@@ -75,7 +75,7 @@ export function renderGraph(
       const key = d.toISOString().slice(0, 10);
       const cell = map.get(key);
 
-      if (!cell || cell.level <= 0) {
+      if (!cell || cell.level < 0) {
         line += "   ";
       } else {
         const hex = theme.levels[cell.level];
