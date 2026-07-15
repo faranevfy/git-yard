@@ -21,7 +21,7 @@ const MONTHS = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-const BLOCK = "▄▄";
+const BLOCK = "■";
 const BRAND = "#3fb950";
 
 function dayMap(days: ContributionDay[]): Map<string, ContributionDay> {
@@ -82,14 +82,19 @@ export function renderGraph(
   out.push(chalk.hex(BRAND)("◆") + chalk.bold.white(" git-yard") + chalk.dim(`  ${head}`));
   out.push("");
 
-  // Month labels (gutter at col 0, then one label per week column)
-  const labelRow: string[] = [];
+  // Month labels (gutter at col 0, then labels mapped to 2-character columns)
+  let monthLine = "".padEnd(weeks * 2, " ");
   for (let w = 0; w < weeks; w++) {
     const d = new Date(origin);
     d.setUTCDate(d.getUTCDate() + w * 7);
-    labelRow.push(d.getUTCDate() <= 7 ? MONTHS[d.getUTCMonth()] : "");
+    const isNewMonth = d.getUTCDate() <= 7;
+    if (isNewMonth) {
+      const label = MONTHS[d.getUTCMonth()];
+      const idx = w * 2;
+      monthLine = monthLine.slice(0, idx) + label + monthLine.slice(idx + label.length);
+    }
   }
-  out.push("   " + labelRow.map((l) => l.padEnd(3)).join(""));
+  out.push("   " + monthLine.trimEnd());
 
   // Grid
   for (let r = 0; r < 7; r++) {
@@ -101,13 +106,13 @@ export function renderGraph(
       const cell = map.get(key);
 
       if (!cell || cell.level < 0) {
-        line += "   ";
+        line += "  ";
       } else {
         const hex = theme.levels[cell.level];
         const isToday = key === today;
         if (isToday) {
-          const fgColor = isLight(hex) ? "#161b22" : "#ffffff";
-          line += chalk.bgHex(hex).hex(fgColor)("[]") + " ";
+          const bgColor = isLight(hex) ? "#161b22" : "#ffffff";
+          line += chalk.bgHex(bgColor).hex(hex)(BLOCK) + " ";
         } else {
           line += chalk.hex(hex)(BLOCK) + " ";
         }
