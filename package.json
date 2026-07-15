@@ -30,10 +30,10 @@
     "git"
   ],
   "license": "MIT",
-  "author": "evfydev",
+  "author": "faranevfy",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evfydev/git-yard.git"
+    "url": "git+https://github.com/faranevfy/git-yard.git"
   },
   "dependencies": {
     "chalk": "^5.4.1",
