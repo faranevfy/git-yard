@@ -21,7 +21,7 @@ const MONTHS = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-const BLOCK = "██";
+const BLOCK = "▄▄";
 const BRAND = "#3fb950";
 
 function dayMap(days: ContributionDay[]): Map<string, ContributionDay> {
@@ -109,7 +109,7 @@ export function renderGraph(
           const fgColor = isLight(hex) ? "#161b22" : "#ffffff";
           line += chalk.bgHex(hex).hex(fgColor)("[]") + " ";
         } else {
-          line += chalk.bgHex(hex).hex(hex)(BLOCK) + " ";
+          line += chalk.hex(hex)(BLOCK) + " ";
         }
       }
     }
@@ -122,7 +122,7 @@ export function renderGraph(
   // Legend (gradation scale, not words)
   out.push("");
   const grad = theme.levels
-    .map((hex) => chalk.bgHex(hex).hex(hex)(BLOCK))
+    .map((hex) => chalk.hex(hex)(BLOCK))
     .join(" ");
   out.push("  " + chalk.dim("Less") + " " + grad + " " + chalk.dim("More"));
 
