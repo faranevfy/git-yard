@@ -5,7 +5,7 @@
 Instant GitHub contribution graph in your terminal — true-color green, zero config, no auth.
 
 ```bash
-npx git-yard evfydev
+npx git-yard <username>
 ```
 
 ## Why?
@@ -34,7 +34,7 @@ git-yard <username> --theme blue # Alternate color theme
 ```bash
 npm install -g git-yard
 # or just run it:
-npx git-yard evfydev
+npx git-yard <username>
 ```
 
 Requires Node.js >= 20.
