@@ -22,8 +22,7 @@ const MONTHS = [
 ];
 const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const BLOCK = "▆▆";
-const BRAND = "#3fb950";
-const SEP = "\u2009"; // Thin space U+2009
+const SEP = "\u200A"; // Hair space U+200A for smaller horizontal gap
 
 function dayMap(days: ContributionDay[]): Map<string, ContributionDay> {
   const m = new Map<string, ContributionDay>();
@@ -62,6 +61,16 @@ export function renderGraph(
   const endSunday = prevSunday(parseDate(lastDate));
   const weeks = Math.round((endSunday.getTime() - origin.getTime()) / (7 * 86400000)) + 1;
 
+  let startWeek = 0;
+  if (process.stdout.columns) {
+    const gutterWidth = 3; // 'Su ' is 3 chars
+    const colWidth = 2 + SEP.length;
+    const maxWeeks = Math.floor((process.stdout.columns - gutterWidth) / colWidth);
+    if (maxWeeks > 0 && maxWeeks < weeks) {
+      startWeek = weeks - maxWeeks;
+    }
+  }
+
   const years = new Set(days.map((d) => d.date.slice(0, 4)));
   const yearLabel = years.size === 1 ? [...years][0] : "rolling";
   const todayRow = parseDate(today).getUTCDay();
@@ -70,39 +79,39 @@ export function renderGraph(
 
   // Header
   const head = username ? `${username} · ${yearLabel}` : yearLabel;
-  out.push(chalk.hex(BRAND)("◆") + chalk.bold.white(" git-yard") + chalk.dim(`  ${head}`));
+  out.push(chalk.hex(theme.brand)("◆") + chalk.bold.white(" git-yard") + chalk.dim(`  ${head}`));
   out.push("");
 
-  // Month labels (gutter at col 0, then labels mapped to 2-character columns with thin space separators)
-  const monthCols: string[] = [];
-  for (let w = 0; w < weeks; w++) {
-    monthCols.push("");
-  }
+  // Month labels (gutter at col 0, then labels mapped to exactly align with grid columns)
+  let monthLine = "";
+  let currentMonth = -1;
+  const colWidth = 2 + SEP.length;
 
-  for (let w = 0; w < weeks; w++) {
+  for (let w = startWeek; w < weeks; w++) {
+    const targetLen = (w - startWeek) * colWidth;
+    // Pad to current column start
+    while (monthLine.length < targetLen) {
+      monthLine += " ";
+    }
+
     const d = new Date(origin);
     d.setUTCDate(d.getUTCDate() + w * 7);
+    const m = d.getUTCMonth();
     const isNewMonth = d.getUTCDate() <= 7;
-    if (isNewMonth) {
-      const label = MONTHS[d.getUTCMonth()];
-      monthCols[w] = label.slice(0, 2);
-      if (w + 1 < weeks) {
-        monthCols[w + 1] = label.slice(2).padEnd(2);
-      }
-      w++;
-    } else {
-      if (monthCols[w] === "") {
-        monthCols[w] = "  ";
-      }
+    
+    // We only print the month label if it's the first week of the month (or the very first week shown if it starts early)
+    if (isNewMonth && m !== currentMonth) {
+      monthLine += MONTHS[m];
+      currentMonth = m;
     }
   }
-  const monthLine = monthCols.join(SEP) + SEP;
+  
   out.push("   " + monthLine.trimEnd());
 
   // Grid
   for (let r = 0; r < 7; r++) {
     let line = DAY_LABELS[r].padEnd(2) + " ";
-    for (let w = 0; w < weeks; w++) {
+    for (let w = startWeek; w < weeks; w++) {
       const d = new Date(origin);
       d.setUTCDate(d.getUTCDate() + w * 7 + r);
       const key = d.toISOString().slice(0, 10);
@@ -114,15 +123,13 @@ export function renderGraph(
         const hex = theme.levels[cell.level];
         const isToday = key === today;
         if (isToday) {
-          line += chalk.hex(hex).bold.underline(BLOCK) + SEP;
+          line += chalk.hex(hex).bold(BLOCK) + SEP;
         } else {
           line += chalk.hex(hex)(BLOCK) + SEP;
         }
       }
     }
-    if (r === todayRow) {
-      line += "  " + chalk.bold.hex(BRAND)(`${stats.currentStreak}d streak`);
-    }
+
     out.push(line);
   }
 
