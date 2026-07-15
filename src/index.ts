@@ -73,7 +73,7 @@ Cache: ~/.git-yard/ (15-minute TTL)`);
   }
 
   const stats = calculateStreaks(data.days);
-  const output = renderGraph(data.days, theme, stats);
+  const output = renderGraph(data.days, theme, stats, username);
   console.log(output);
 }
 
