@@ -10,7 +10,7 @@ npx git-yard evfydev
 
 ## Why?
 
-No tool sits in the sweet spot of being zero-config, beautiful (actual GitHub green), and single-purpose. `streaker` is ugly ASCII. `ghgarden` needs Rust + a token. git-yard is the `cat` of contribution graphs.
+git-yard sits in the sweet spot of being zero-config, beautiful (actual GitHub green), and single-purpose. It's the `cat` of contribution graphs.
 
 ## Features
 
