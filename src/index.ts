@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * git-yard — Your terminal is your yard.
+ * gitreak — Your terminal is your yard.
  *
  * Renders a GitHub contribution graph directly in the terminal
  * using true-color ANSI escape codes. Zero config, no auth.
  *
- *   $ git-yard faranevfy          (rolling 53-week default)
- *   $ git-yard faranevfy --year 2025
+ *   $ gitreak faranevfy          (rolling 53-week default)
+ *   $ gitreak faranevfy --year 2025
  */
 
 import { fetchContributions } from "./fetch.js";
@@ -19,18 +19,18 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
 
   if (args.length === 0 || args[0] === "--help" || args[0] === "-h") {
-    console.log(`git-yard — GitHub contribution graph in your terminal
+    console.log(`gitreak — GitHub contribution graph in your terminal
 
 Usage:
-  git-yard <username>              Show rolling 53-week contribution graph
-  git-yard <username> --year 2025  Show a specific calendar year
-  git-yard <username> --theme blue Use an alternate color theme
+  gitreak <username>              Show rolling 53-week contribution graph
+  gitreak <username> --year 2025  Show a specific calendar year
+  gitreak <username> --theme blue Use an alternate color theme
 
 Examples:
-  git-yard faranevfy
-  git-yard torvalds --year 2024
+  gitreak faranevfy
+  gitreak torvalds --year 2024
 
-Cache: ~/.git-yard/ (15-minute TTL)`);
+Cache: ~/.gitreak/ (15-minute TTL)`);
     return;
   }
 
@@ -78,6 +78,6 @@ Cache: ~/.git-yard/ (15-minute TTL)`);
 }
 
 main().catch((err) => {
-  console.error(`git-yard: ${err instanceof Error ? err.message : err}`);
+  console.error(`gitreak: ${err instanceof Error ? err.message : err}`);
   process.exit(1);
 });

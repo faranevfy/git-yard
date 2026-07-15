@@ -1,11 +1,11 @@
 {
-  "name": "git-yard",
+  "name": "gitreak",
   "version": "0.1.0",
   "description": "Your terminal is your yard. Instant GitHub contribution graph in true-color ANSI.",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "git-yard": "./dist/index.js"
+    "gitreak": "./dist/index.js"
   },
   "files": [
     "dist"

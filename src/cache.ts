@@ -1,7 +1,7 @@
 /**
  * File-based cache for contribution data.
  *
- * Stores data in ~/.git-yard/{username}_{year|"rolling"}.json
+ * Stores data in ~/.gitreak/{username}_{year|"rolling"}.json
  * with a 15-minute TTL.
  */
 
@@ -10,7 +10,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import type { FetchResult } from "./fetch.js";
 
-const CACHE_DIR = join(homedir(), ".git-yard");
+const CACHE_DIR = join(homedir(), ".gitreak");
 const TTL_MS = 15 * 60 * 1000;
 
 function cacheKey(username: string, year: number | null): string {

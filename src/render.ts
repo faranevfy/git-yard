@@ -79,7 +79,7 @@ export function renderGraph(
 
   // Header
   const head = username ? `${username} · ${yearLabel}` : yearLabel;
-  out.push(chalk.hex(theme.brand)("◆") + chalk.bold.white(" git-yard") + chalk.dim(`  ${head}`));
+  out.push(chalk.hex(theme.brand)("◆") + chalk.bold.white(" gitreak") + chalk.dim(`  ${head}`));
   out.push("");
 
   // Month labels (gutter at col 0, then labels mapped to exactly align with grid columns)

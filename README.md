@@ -1,16 +1,16 @@
-# git-yard
+# gitreak
 
 > Your terminal is your yard. 🌱
 
 Instant GitHub contribution graph in your terminal — true-color green, zero config, no auth.
 
 ```bash
-npx git-yard <username>
+npx gitreak <username>
 ```
 
 ## Why?
 
-git-yard sits in the sweet spot of being zero-config, beautiful (actual GitHub green), and single-purpose. It's the `cat` of contribution graphs.
+gitreak sits in the sweet spot of being zero-config, beautiful (actual GitHub green), and single-purpose. It's the `cat` of contribution graphs.
 
 ## Features
 
@@ -19,22 +19,22 @@ git-yard sits in the sweet spot of being zero-config, beautiful (actual GitHub g
 - **Unicode blocks** — uses ▆▆ characters and hair spaces for tightly proportioned cells
 - **Responsive** — automatically truncates the graph on narrow screens to prevent ugly text wrapping
 - **Streak stats** — current streak, longest streak, total contributions
-- **15-minute cache** — stored in `~/.git-yard/` so you're not hammering GitHub
+- **15-minute cache** — stored in `~/.gitreak/` so you're not hammering GitHub
 
 ## Usage
 
 ```bash
-git-yard <username>              # Current year
-git-yard <username> --year 2025  # Specific year
-git-yard <username> --theme blue # Alternate color theme
+gitreak <username>              # Current year
+gitreak <username> --year 2025  # Specific year
+gitreak <username> --theme blue # Alternate color theme
 ```
 
 ## Install
 
 ```bash
-npm install -g git-yard
+npm install -g gitreak
 # or just run it:
-npx git-yard <username>
+npx gitreak <username>
 ```
 
 Requires Node.js >= 20.
