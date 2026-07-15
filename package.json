@@ -1,0 +1,51 @@
+{
+  "name": "git-yard",
+  "version": "0.1.0",
+  "description": "Your terminal is your yard. Instant GitHub contribution graph in true-color ANSI.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "git-yard": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check src/",
+    "format": "biome format --write src/",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "github",
+    "contributions",
+    "cli",
+    "terminal",
+    "ansi",
+    "git"
+  ],
+  "license": "MIT",
+  "author": "evfydev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evfydev/git-yard.git"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.3",
+    "@types/node": "^22.14.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
