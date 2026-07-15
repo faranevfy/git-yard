@@ -2,3 +2,10 @@ node_modules/
 dist/
 .env
 *.tsbuildinfo
+
+# Project specific ignores
+.commandcode/
+docs/
+scripts/
+idea.md
+preview.html
