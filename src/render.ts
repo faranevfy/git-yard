@@ -101,7 +101,7 @@ export function renderGraph(
         const hex = theme.levels[cell.level];
         const isToday = key === today;
         if (isToday) {
-          line += chalk.hex(hex)("▣") + " ";
+          line += chalk.hex(hex)("▢") + " ";
         } else {
           line += chalk.hex(hex)(BLOCK) + " ";
         }
