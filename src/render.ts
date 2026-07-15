@@ -43,16 +43,6 @@ function prevSunday(d: Date): Date {
   return s;
 }
 
-/** Check if a hex color is light. */
-function isLight(hexColor: string): boolean {
-  const clean = hexColor.replace("#", "");
-  const r = Number.parseInt(clean.substring(0, 2), 16);
-  const g = Number.parseInt(clean.substring(2, 4), 16);
-  const b = Number.parseInt(clean.substring(4, 6), 16);
-  // Using relative luminance formula
-  return r * 0.299 + g * 0.587 + b * 0.114 > 186;
-}
-
 export function renderGraph(
   days: ContributionDay[],
   theme: Theme,
@@ -111,8 +101,7 @@ export function renderGraph(
         const hex = theme.levels[cell.level];
         const isToday = key === today;
         if (isToday) {
-          const bgColor = isLight(hex) ? "#161b22" : "#ffffff";
-          line += chalk.bgHex(bgColor).hex(hex)(BLOCK) + " ";
+          line += chalk.hex(hex)("▣") + " ";
         } else {
           line += chalk.hex(hex)(BLOCK) + " ";
         }
