@@ -15,8 +15,9 @@ git-yard sits in the sweet spot of being zero-config, beautiful (actual GitHub g
 ## Features
 
 - **Zero config** — no token, no API key, no setup
-- **True-color ANSI** — exact GitHub green palette (`#ebedf0` → `#216e39`)
-- **Unicode blocks** — full-block █ characters for properly proportioned squares
+- **True-color ANSI** — exact GitHub green palette (plus dark and blue themes)
+- **Unicode blocks** — uses ▆▆ characters and hair spaces for tightly proportioned cells
+- **Responsive** — automatically truncates the graph on narrow screens to prevent ugly text wrapping
 - **Streak stats** — current streak, longest streak, total contributions
 - **15-minute cache** — stored in `~/.git-yard/` so you're not hammering GitHub
 
