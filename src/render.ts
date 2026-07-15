@@ -23,6 +23,7 @@ const MONTHS = [
 const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const BLOCK = "▆▆";
 const BRAND = "#3fb950";
+const SEP = "\u2009"; // Thin space U+2009
 
 function dayMap(days: ContributionDay[]): Map<string, ContributionDay> {
   const m = new Map<string, ContributionDay>();
@@ -72,14 +73,31 @@ export function renderGraph(
   out.push(chalk.hex(BRAND)("◆") + chalk.bold.white(" git-yard") + chalk.dim(`  ${head}`));
   out.push("");
 
-  // Month labels (gutter at col 0, then one label per week column)
-  const labelRow: string[] = [];
+  // Month labels (gutter at col 0, then labels mapped to 2-character columns with thin space separators)
+  const monthCols: string[] = [];
+  for (let w = 0; w < weeks; w++) {
+    monthCols.push("");
+  }
+
   for (let w = 0; w < weeks; w++) {
     const d = new Date(origin);
     d.setUTCDate(d.getUTCDate() + w * 7);
-    labelRow.push(d.getUTCDate() <= 7 ? MONTHS[d.getUTCMonth()] : "");
+    const isNewMonth = d.getUTCDate() <= 7;
+    if (isNewMonth) {
+      const label = MONTHS[d.getUTCMonth()];
+      monthCols[w] = label.slice(0, 2);
+      if (w + 1 < weeks) {
+        monthCols[w + 1] = label.slice(2).padEnd(2);
+      }
+      w++;
+    } else {
+      if (monthCols[w] === "") {
+        monthCols[w] = "  ";
+      }
+    }
   }
-  out.push("   " + labelRow.map((l) => l.padEnd(3)).join(""));
+  const monthLine = monthCols.join(SEP) + SEP;
+  out.push("   " + monthLine.trimEnd());
 
   // Grid
   for (let r = 0; r < 7; r++) {
@@ -91,14 +109,14 @@ export function renderGraph(
       const cell = map.get(key);
 
       if (!cell || cell.level < 0) {
-        line += "   ";
+        line += "  " + SEP;
       } else {
         const hex = theme.levels[cell.level];
         const isToday = key === today;
         if (isToday) {
-          line += chalk.hex(hex).bold.underline(BLOCK) + " ";
+          line += chalk.hex(hex).bold.underline(BLOCK) + SEP;
         } else {
-          line += chalk.hex(hex)(BLOCK) + " ";
+          line += chalk.hex(hex)(BLOCK) + SEP;
         }
       }
     }
@@ -112,7 +130,7 @@ export function renderGraph(
   out.push("");
   const grad = theme.levels
     .map((hex) => chalk.hex(hex)(BLOCK))
-    .join(" ");
+    .join(SEP);
   out.push("  " + chalk.dim("Less") + " " + grad + " " + chalk.dim("More"));
 
   // Stats footer
